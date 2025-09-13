@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+app:
+  crmBaseUrl: ${CRM_BASE_URL:http://localhost:8000}
+  customerTopic: ${CUSTOMER_TOPIC:customer_data}
+  customerDlqTopic: ${CUSTOMER_DLQ_TOPIC:dlq_customer_data}
+
+spring:
+  application:
+    name: crm-producer
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        linger.ms: 5
+        batch.size: 32768
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}

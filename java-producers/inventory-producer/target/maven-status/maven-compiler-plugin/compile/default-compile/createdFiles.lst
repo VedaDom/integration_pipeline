@@ -1,0 +1,7 @@
+com/example/inventoryproducer/service/KafkaPublisher.class
+com/example/inventoryproducer/scheduler/InventoryPoller.class
+com/example/inventoryproducer/config/Beans.class
+com/example/inventoryproducer/model/Product.class
+com/example/inventoryproducer/InventoryProducerApplication.class
+com/example/inventoryproducer/service/InventoryClient.class
+com/example/inventoryproducer/service/KafkaPublisher$DlqMessage.class

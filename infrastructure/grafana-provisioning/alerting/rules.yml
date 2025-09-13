@@ -1,0 +1,96 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: integration-alerts
+    folder: Integration Alerts
+    interval: 1m
+    rules:
+      - uid: analytics-fail-rate
+        title: Analytics POST Fail Rate High
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: Prometheus
+            model:
+              expr: rate(analytics_post_fail_total[5m])
+              instant: false
+              range: true
+              intervalMs: 60000
+              maxDataPoints: 43200
+              refId: A
+              datasource:
+                type: prometheus
+                uid: Prometheus
+          - refId: B
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+                  operator:
+                    type: and
+                  query:
+                    params: [A]
+                  reducer:
+                    type: last
+                  type: query
+              refId: B
+        for: 2m
+        annotations:
+          summary: Analytics POST failures > 0/s over 5m
+        labels:
+          severity: warning
+        isPaused: false
+      - uid: analytics-dlq-rate
+        title: Analytics DLQ Rate High
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: Prometheus
+            model:
+              expr: rate(analytics_dlq_total[5m])
+              instant: false
+              range: true
+              intervalMs: 60000
+              maxDataPoints: 43200
+              refId: A
+              datasource:
+                type: prometheus
+                uid: Prometheus
+          - refId: B
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+                  operator:
+                    type: and
+                  query:
+                    params: [A]
+                  reducer:
+                    type: last
+                  type: query
+              refId: B
+        for: 2m
+        annotations:
+          summary: Analytics DLQ rate > 0/s over 5m
+        labels:
+          severity: critical
+        isPaused: false

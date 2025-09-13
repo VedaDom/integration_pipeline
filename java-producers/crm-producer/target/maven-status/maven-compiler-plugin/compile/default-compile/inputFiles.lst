@@ -1,0 +1,6 @@
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/CrmProducerApplication.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/config/Beans.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/model/Customer.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/scheduler/CrmPoller.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/service/CrmClient.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/crm-producer/src/main/java/com/example/crmproducer/service/KafkaPublisher.java

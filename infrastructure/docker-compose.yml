@@ -1,0 +1,128 @@
+version: "3.9"
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.9
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:3.7
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"   # internal listener
+      - "29092:29092" # host listener
+    environment:
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  mock-apis:
+    build:
+      context: ../mock-apis/fastapi_app
+    image: mock-apis:latest
+    depends_on:
+      - kafka
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../mock-apis/fastapi_app/app:/app/app
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana-provisioning/alerting:/etc/grafana/provisioning/alerting
+
+  python-consumer:
+    build:
+      context: ../python-consumers/analytics_consumer
+    image: analytics-consumer:latest
+    depends_on:
+      - kafka
+      - redis
+      - mock-apis
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_URL=redis://redis:6379/0
+      - ANALYTICS_URL=http://mock-apis:8000/analytics/upload
+      - ANALYTICS_MODE=csv
+      - BATCH_MAX_SIZE=50
+      - FLUSH_INTERVAL_SECS=10
+      - ANALYTICS_DLQ_TOPIC=analytics_dlq
+      - METRICS_PORT=9108
+      - IDEMP_TTL_SECONDS=10
+    ports:
+      - "9108:9108"
+
+  docs:
+    image: squidfunk/mkdocs-material:latest
+    ports:
+      - "8001:8000"
+    volumes:
+      - ../mkdocs.yml:/docs/mkdocs.yml:ro
+      - ../docs:/docs/docs:ro
+
+  crm-producer:
+    build:
+      context: ..
+      dockerfile: java-producers/crm-producer/Dockerfile
+    image: crm-producer:latest
+    depends_on:
+      - kafka
+      - mock-apis
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - CRM_BASE_URL=http://mock-apis:8000
+      - CUSTOMER_TOPIC=customer_data
+      - CUSTOMER_DLQ_TOPIC=dlq_customer_data
+    # No host port mapping needed; scraped internally by Prometheus
+
+  inventory-producer:
+    build:
+      context: ..
+      dockerfile: java-producers/inventory-producer/Dockerfile
+    image: inventory-producer:latest
+    depends_on:
+      - kafka
+      - mock-apis
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - INVENTORY_BASE_URL=http://mock-apis:8000
+      - INVENTORY_TOPIC=inventory_data
+      - INVENTORY_DLQ_TOPIC=dlq_inventory_data
+    # No host port mapping needed; scraped internally by Prometheus

@@ -1,0 +1,33 @@
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+includeObjectNames:
+  - 'kafka.producer:type=producer-metrics,client-id=*'
+  - 'kafka.producer:type=producer-topic-metrics,topic=*,client-id=*'
+rules:
+  - pattern: 'kafka.producer<type=producer-metrics, client-id=(.*)><>(record-send-total)'
+    name: kafka_producer_record_send_total
+    labels:
+      client_id: "$1"
+    type: COUNTER
+  - pattern: 'kafka.producer<type=producer-metrics, client-id=(.*)><>(record-send-rate)'
+    name: kafka_producer_record_send_rate
+    labels:
+      client_id: "$1"
+    type: GAUGE
+  - pattern: 'kafka.producer<type=producer-metrics, client-id=(.*)><>(record-error-total)'
+    name: kafka_producer_record_error_total
+    labels:
+      client_id: "$1"
+    type: COUNTER
+  - pattern: 'kafka.producer<type=producer-topic-metrics, topic=(.*), client-id=(.*)><>(record-send-total)'
+    name: kafka_producer_topic_record_send_total
+    labels:
+      topic: "$1"
+      client_id: "$2"
+    type: COUNTER
+  - pattern: 'kafka.producer<type=producer-topic-metrics, topic=(.*), client-id=(.*)><>(record-send-rate)'
+    name: kafka_producer_topic_record_send_rate
+    labels:
+      topic: "$1"
+      client_id: "$2"
+    type: GAUGE

@@ -1,0 +1,4 @@
+[
+  {"product_id": "p1", "sku": "SKU-001", "qty": 120, "updated_at": "2025-01-01T00:00:00Z"},
+  {"product_id": "p2", "sku": "SKU-002", "qty": 15, "updated_at": "2025-01-03T00:00:00Z"}
+]

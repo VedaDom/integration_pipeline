@@ -1,0 +1,7 @@
+com/example/crmproducer/CrmProducerApplication.class
+com/example/crmproducer/service/KafkaPublisher$DlqMessage.class
+com/example/crmproducer/service/CrmClient.class
+com/example/crmproducer/config/Beans.class
+com/example/crmproducer/service/KafkaPublisher.class
+com/example/crmproducer/scheduler/CrmPoller.class
+com/example/crmproducer/model/Customer.class

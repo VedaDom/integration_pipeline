@@ -1,0 +1,6 @@
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/InventoryProducerApplication.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/config/Beans.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/model/Product.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/scheduler/InventoryPoller.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/service/InventoryClient.java
+/Users/wistfareltd/Documents/inkomoko/java-producers/inventory-producer/src/main/java/com/example/inventoryproducer/service/KafkaPublisher.java

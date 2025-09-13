@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+  # Add additional scrape targets as services expose /metrics
+  - job_name: 'mock-apis'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['mock-apis:8000']
+  - job_name: 'java-producers'
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['crm-producer:8081', 'inventory-producer:8082']
+  - job_name: 'java-producers-jmx'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['crm-producer:9404', 'inventory-producer:9404']
+  - job_name: 'python-consumer'
+    metrics_path: /
+    static_configs:
+      - targets: ['python-consumer:9108']

@@ -1,0 +1,42 @@
+site_name: Inkomoko Integration Pipeline
+site_description: Scalable integration with Java producers, Python consumers, Kafka, and observability
+site_url: http://localhost:8001
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
+nav:
+  - Overview: index.md
+  - Architecture: architecture.md
+  - Scalability & Performance: scalability.md
+  - Runbook: runbook.md
+  - Testing: testing.md
+  - Observability: observability.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra:
+  social:
+    - icon: material/github
+      link: https://github.com/your-org/your-repo
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  - docs/js/mermaid-init.js

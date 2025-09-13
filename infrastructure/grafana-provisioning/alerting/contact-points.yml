@@ -1,0 +1,23 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: default-webhook
+    receivers:
+      - uid: default-webhook
+        type: webhook
+        settings:
+          url: http://CHANGE_ME/webhook
+          httpMethod: POST
+          maxAlerts: 5
+          authorizationScheme: basic
+          basicAuthUser: ""
+          basicAuthPassword: ""
+          sendResolved: true
+alerting:
+  contactPoint: default-webhook
+  policies:
+    - orgId: 1
+      receiver: default-webhook
+      group_by: ['...']
+      routes:
+        - receiver: default-webhook
