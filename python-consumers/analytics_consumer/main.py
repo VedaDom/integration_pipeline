@@ -50,7 +50,8 @@ async def post_csv_batch(payload_csv: str, url: str, producer: AIOKafkaProducer,
             if 200 <= resp.status_code < 300:
                 ANALYTICS_SUCCESS.inc()
                 BATCH_COUNT.inc()
-                log.info(f"analytics_post_ok mode=csv rows={payload_csv.count('\n')-1} status={resp.status_code}")
+                rows = payload_csv.count("\n") - 1
+                log.info(f"analytics_post_ok mode=csv rows={rows} status={resp.status_code}")
                 return
             else:
                 ANALYTICS_FAIL.inc()
