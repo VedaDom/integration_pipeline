@@ -59,4 +59,4 @@ GitHub Actions workflow runs Java and Python tests on push/PR under `.github/wor
 
 Screenshot of the Grafana dashboard showing producer and consumer metrics during a test run:
 
-![Grafana Dashboard](https://res.cloudinary.com/dlwzb2uh3/image/upload/fl_preserve_transparency/v1757799669/Screenshot_2025-09-13_at_23.27.16_paxvuo.jpg?_s=public-apps)
+![Grafana Dashboard](https://res.cloudinary.com/dlwzb2uh3/image/upload/fl_preserve_transparency/v1757868436/Screenshot_2025-09-14_at_18.34.45_ngla5i.jpg?_s=public-apps)
